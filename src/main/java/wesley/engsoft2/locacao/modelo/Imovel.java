@@ -7,8 +7,8 @@ import java.util.Objects;
 @Table(name = "imovel")
 public class Imovel {
 
-	@Id @SequenceGenerator(name = "id_imovel_seq", sequenceName = "pk_id_imovel",allocationSize=0,initialValue=1)
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_imovel_seq")
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
 	private Long id;
 
