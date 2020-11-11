@@ -11,6 +11,13 @@ public class ImovelRepositoryImpl implements ImovelRepository {
 	}
 
 	@Override
+	public Imovel buscaPorId(Long id) {
+		return manager.createQuery("SELECT u FROM Imovel u WHERE u.id = :pId", Imovel.class)
+				.setParameter("pId", id)
+				.getSingleResult();
+	}
+
+	@Override
 	public Imovel buscaPorTipo(String tipo) {
 		return manager.createQuery("SELECT u FROM Imovel u WHERE u.tipoDeImovel = :pTipo", Imovel.class)
 				.setParameter("pTipo", tipo)

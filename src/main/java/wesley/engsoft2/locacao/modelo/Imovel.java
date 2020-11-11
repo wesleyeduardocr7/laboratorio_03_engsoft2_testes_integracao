@@ -42,8 +42,8 @@ public class Imovel {
 	@Column(name = "valor_aluguel_sugerido")
 	private BigDecimal valorDoAluguelSugerido;
 
-	@Column(name = "cbs")
-	private String cbs;
+	@Column(name = "obs")
+	private String obs;
 
 	public Imovel() {}
 
@@ -139,12 +139,12 @@ public class Imovel {
 		this.valorDoAluguelSugerido = valorDoAluguelSugerido;
 	}
 
-	public String getCbs() {
-		return cbs;
+	public String getObs() {
+		return obs;
 	}
 
-	public void setCbs(String cbs) {
-		this.cbs = cbs;
+	public void setObs(String obs) {
+		this.obs = obs;
 	}
 
 	@Override
@@ -174,7 +174,7 @@ public class Imovel {
 				", quantidadeDeSuites=" + quantidadeDeSuites +
 				", quantidadeDeVagasDeGaragem=" + quantidadeDeVagasDeGaragem +
 				", valorDoAluguelSugerido=" + valorDoAluguelSugerido +
-				", cbs='" + cbs + '\'' +
+				", obs='" + obs + '\'' +
 				'}';
 	}
 }

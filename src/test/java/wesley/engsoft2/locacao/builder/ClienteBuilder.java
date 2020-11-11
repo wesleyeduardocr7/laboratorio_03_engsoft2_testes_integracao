@@ -8,7 +8,7 @@ public class ClienteBuilder {
 
 	private ClienteBuilder() {}
 	
-	public static ClienteBuilder umImovel() {
+	public static ClienteBuilder umCliente() {
 		
 		ClienteBuilder builder = new ClienteBuilder();
 		builder.cliente = new Cliente();
