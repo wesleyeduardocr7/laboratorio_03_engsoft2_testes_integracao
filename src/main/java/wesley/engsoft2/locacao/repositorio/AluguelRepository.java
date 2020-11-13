@@ -1,9 +1,11 @@
 package wesley.engsoft2.locacao.repositorio;
 import wesley.engsoft2.locacao.modelo.Aluguel;
 
+import java.time.LocalDate;
+
 public interface AluguelRepository {
 
-	Aluguel buscaPorIdLocacao(Long id);
+	Aluguel buscaPorDataVencimento(LocalDate dataVencimento);
 
 	void salva(Aluguel aluguel);
 

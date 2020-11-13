@@ -1,8 +1,7 @@
 package wesley.engsoft2.locacao.builder;
 import wesley.engsoft2.locacao.modelo.Aluguel;
-import wesley.engsoft2.locacao.modelo.Cliente;
-import wesley.engsoft2.locacao.modelo.Imovel;
 import wesley.engsoft2.locacao.modelo.Locacao;
+
 import java.time.LocalDate;
 
 public class AluguelBuilder {
@@ -14,24 +13,15 @@ public class AluguelBuilder {
 	
 	public static AluguelBuilder umAluguel() {
 
-		Imovel imovel = new Imovel();
-		imovel.setId(new Long(1));
-		imovel.setTipoDeImovel("Luxo");
-
-		Cliente cliente = new Cliente();
-		cliente.setId(new Long(1));
-		cliente.setNome("Wesley");
-
-		Locacao locacao = new Locacao();
-		locacao.setId(new Long( 1));
-		locacao.setImovel(imovel);
-		locacao.setCliente(cliente);
-		
 		AluguelBuilder builder = new AluguelBuilder();
 
 		builder.aluguel = new Aluguel();
+
+		Locacao locacao = LocacaoBuilder.umaLocacao().constroi();
+
 		builder.aluguel.setLocacao(locacao);
-		builder.aluguel.setDataVencimento(LocalDate.now());
+
+		builder.aluguel.setDataVencimento(LocalDate.now().plusDays(30));
 
 		return builder;
 	}

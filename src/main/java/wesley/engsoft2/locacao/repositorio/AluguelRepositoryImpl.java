@@ -1,7 +1,7 @@
 package wesley.engsoft2.locacao.repositorio;
 import wesley.engsoft2.locacao.modelo.Aluguel;
-
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 
 public class AluguelRepositoryImpl implements AluguelRepository {
 
@@ -12,9 +12,9 @@ public class AluguelRepositoryImpl implements AluguelRepository {
 	}
 
 	@Override
-	public Aluguel buscaPorIdLocacao(Long id) {
-		return manager.createQuery("SELECT a FROM Aluguel a WHERE a.id = :pId", Aluguel.class)
-				.setParameter("pId", id)
+	public Aluguel buscaPorDataVencimento(LocalDate dataVencimento) {
+		return manager.createQuery("SELECT a FROM Aluguel a WHERE a.dataVencimento = :pDataVencimento", Aluguel.class)
+				.setParameter("pDataVencimento", dataVencimento)
 				.getSingleResult();
 	}
 

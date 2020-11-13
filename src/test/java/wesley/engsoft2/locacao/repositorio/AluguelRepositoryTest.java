@@ -1,5 +1,6 @@
 package wesley.engsoft2.locacao.repositorio;
 import org.junit.jupiter.api.*;
+import wesley.engsoft2.locacao.builder.AluguelBuilder;
 import wesley.engsoft2.locacao.builder.ImovelBuilder;
 import wesley.engsoft2.locacao.builder.LocacaoBuilder;
 import wesley.engsoft2.locacao.modelo.Aluguel;
@@ -10,15 +11,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
+import java.time.LocalDate;
 
 public class AluguelRepositoryTest {
 
 	private EntityManager manager;
 	private static EntityManagerFactory emf;
 	private AluguelRepository alugueis;
-	private ImovelRepository imoveis;
-	private ClienteRepository clientes;
-	private LocacaolRepository locacoes;
 
 	@BeforeAll
 	public static void inicio() {
@@ -30,9 +29,6 @@ public class AluguelRepositoryTest {
 		manager = emf.createEntityManager();
 		manager.getTransaction().begin();
 		alugueis = new AluguelRepositoryImpl(manager);
-		imoveis = new ImovelRepositoryImpl(manager);
-		clientes = new ClienteRepositoryImpl(manager);
-		locacoes = new LocacaoRepositoryImpl(manager);
 	}
 
 	@AfterEach
@@ -45,21 +41,57 @@ public class AluguelRepositoryTest {
 		emf.close();
 	}
 
-
 	@Test
-	public void deveSalvarUmAluguel() {
+	public void deveSalvarUmAluguel(){
 
-		Assertions.assertThrows(NoResultException.class,
-				() -> imoveis.buscaPorTipo("Luxo"),
-				"Deveria lançar a exceção NoResultException");
+		Aluguel aluguel = AluguelBuilder.umAluguel().constroi();
 
-		imoveis.salva(new Imovel("Luxo"));
+		alugueis.salva(aluguel);
 		manager.flush();
 		manager.clear();
 
-		Imovel imovelDoBanco = imoveis.buscaPorTipo("Luxo");
-		Assertions.assertNotNull(imovelDoBanco);
+		Aluguel novoAluguel = alugueis.buscaPorDataVencimento(LocalDate.now().plusDays(30));
 
+		Assertions.assertNotNull(novoAluguel);
 
 	}
+
+	@Test
+	public void deveAtualizarUmAluguel() {
+
+		Aluguel aluguel = AluguelBuilder.umAluguel().constroi();
+
+		alugueis.salva(aluguel);
+		aluguel.setDataVencimento(LocalDate.of(2020,5,20));
+
+		alugueis.atualiza(aluguel);
+
+		manager.flush();
+		manager.clear();
+
+		Aluguel novoAluguel = alugueis.buscaPorDataVencimento(LocalDate.of(2020,5,20));
+		Assertions.assertNotNull(novoAluguel);
+
+		Assertions.assertThrows(NoResultException.class,
+			() -> alugueis.buscaPorDataVencimento(LocalDate.now().plusDays(30)),
+			"Deveria ter lançado a exceção NoResultException");
+	}
+
+	@Test
+	public void deveExcluirUmAluguel() {
+
+
+		Aluguel aluguel = AluguelBuilder.umAluguel().constroi();
+
+		alugueis.salva(aluguel);
+		alugueis.exclui(aluguel);
+
+		manager.flush();
+		manager.clear();
+
+		Assertions.assertThrows(NoResultException.class,
+				() -> alugueis.buscaPorDataVencimento(LocalDate.now().plusDays(30)),
+				"Deveria ter lançado a exceção NoResultException");
+	}
+
 }
