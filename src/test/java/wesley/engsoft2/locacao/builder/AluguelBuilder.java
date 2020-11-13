@@ -1,7 +1,9 @@
 package wesley.engsoft2.locacao.builder;
 import wesley.engsoft2.locacao.modelo.Aluguel;
+import wesley.engsoft2.locacao.modelo.Cliente;
 import wesley.engsoft2.locacao.modelo.Locacao;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class AluguelBuilder {
@@ -13,19 +15,27 @@ public class AluguelBuilder {
 	
 	public static AluguelBuilder umAluguel() {
 
+		Locacao locacao = LocacaoBuilder.umaLocacao().ativo(true).paraUmImovel("Luxo")
+				.comValorSugerido(new BigDecimal(50000)).noBairro("Calhau").paraUmCliente("Wesley").constroi();
+
 		AluguelBuilder builder = new AluguelBuilder();
 
 		builder.aluguel = new Aluguel();
 
-		Locacao locacao = LocacaoBuilder.umaLocacao().constroi();
-
 		builder.aluguel.setLocacao(locacao);
-
-		builder.aluguel.setDataVencimento(LocalDate.now().plusDays(30));
 
 		return builder;
 	}
 
+	public AluguelBuilder comDataDeVencimento(LocalDate dataVencimento) {
+		aluguel.setDataVencimento(dataVencimento);
+		return this;
+	}
+
+	public AluguelBuilder comValorpago(BigDecimal valorPago) {
+		aluguel.setValorPago(valorPago);
+		return this;
+	}
 
 	public Aluguel constroi(){
 		return aluguel;

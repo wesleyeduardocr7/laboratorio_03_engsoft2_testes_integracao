@@ -19,10 +19,7 @@ public class LocacaoBuilder {
 		LocacaoBuilder builder = new LocacaoBuilder();
 
 		builder.locacao = new Locacao();
-
-		builder.locacao.setAtivo(true);
 		builder.locacao.setDataInicio(LocalDate.now());
-		builder.locacao.setValorAluguel(new BigDecimal(5000));
 
 		return builder;
 	}

@@ -1,7 +1,10 @@
 package wesley.engsoft2.locacao.repositorio;
 import wesley.engsoft2.locacao.modelo.Aluguel;
+import wesley.engsoft2.locacao.modelo.Locacao;
+
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.List;
 
 public class AluguelRepositoryImpl implements AluguelRepository {
 
@@ -17,6 +20,14 @@ public class AluguelRepositoryImpl implements AluguelRepository {
 				.setParameter("pDataVencimento", dataVencimento)
 				.getSingleResult();
 	}
+
+	@Override
+	public List<Aluguel> recuperarAlugueisPagosPor(String nomeCliente) {
+		return manager.createQuery("SELECT a FROM Aluguel a WHERE a.locacao.cliente.nome = :pNomeCliente" , Aluguel.class)
+				.setParameter("pNomeCliente", nomeCliente)
+				.getResultList();
+	}
+
 
 	@Override
 	public void salva(Aluguel aluguel) {

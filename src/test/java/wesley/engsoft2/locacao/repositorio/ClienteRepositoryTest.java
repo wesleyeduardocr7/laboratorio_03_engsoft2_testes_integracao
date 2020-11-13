@@ -87,21 +87,4 @@ public class ClienteRepositoryTest {
 				"Deveria ter lançado a exceção NoResultException");
 	}
 
-
-	@Test
-	public void deveEncontrarClientePeloNome() {
-
-		Assertions.assertThrows(NoResultException.class,
-				() -> clientes.buscaPorNome("Wesley"),
-				"Deveria lançar a exceção NoResultException");
-
-		clientes.salva(new Cliente("Wesley") );
-		manager.flush();
-		manager.clear();
-
-		Cliente clienteDoBanco = clientes.buscaPorNome("Wesley");
-
-		assertThat("Wesley", is(equalTo(clienteDoBanco.getNome())));
-	}
-
 }

@@ -87,21 +87,4 @@ public class ImovelRepositoryTest {
 				"Deveria ter lançado a exceção NoResultException");
 	}
 
-	@Test
-	public void deveEncontrarImovelPeloTipo() {
-
-		Assertions.assertThrows(NoResultException.class,
-				() -> imoveis.buscaPorTipo("Luxo"),
-				"Deveria lançar a exceção NoResultException");
-
-		imoveis.salva(new Imovel("Luxo") );
-		manager.flush();
-		manager.clear();
-
-		Imovel imovelDoBanco = imoveis.buscaPorTipo("Luxo");
-
-		assertThat("Luxo", is(equalTo(imovelDoBanco.getTipoDeImovel())));
-	}
-
-
 }
