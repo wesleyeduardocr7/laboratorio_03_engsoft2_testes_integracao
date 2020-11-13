@@ -47,6 +47,11 @@ public class LocacaoBuilder {
 		return this;
 	}
 
+	public LocacaoBuilder comValorSugerido(BigDecimal valorSugerido) {
+		locacao.getImovel().setValorDoAluguelSugerido(valorSugerido);
+		return this;
+	}
+
 	public Locacao constroi(){
 		return locacao;
 	}
