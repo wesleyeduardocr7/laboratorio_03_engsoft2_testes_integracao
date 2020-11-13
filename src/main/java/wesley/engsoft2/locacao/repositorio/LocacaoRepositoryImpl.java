@@ -1,8 +1,7 @@
 package wesley.engsoft2.locacao.repositorio;
-import wesley.engsoft2.locacao.modelo.Aluguel;
 import wesley.engsoft2.locacao.modelo.Locacao;
-
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
 
 public class LocacaoRepositoryImpl implements LocacaolRepository {
 
@@ -10,6 +9,13 @@ public class LocacaoRepositoryImpl implements LocacaolRepository {
 
 	public LocacaoRepositoryImpl(EntityManager manager) {
 		this.manager = manager;
+	}
+
+	@Override
+	public Locacao buscaPorDataInicio(LocalDate dataInicio) {
+		return manager.createQuery("SELECT l FROM Locacao l WHERE l.dataInicio = :pDataInicio", Locacao.class)
+				.setParameter("pDataInicio", dataInicio)
+				.getSingleResult();
 	}
 
 	@Override
