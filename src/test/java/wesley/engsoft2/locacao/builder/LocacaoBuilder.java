@@ -20,17 +20,32 @@ public class LocacaoBuilder {
 
 		builder.locacao = new Locacao();
 
-		builder.locacao.setImovel(new Imovel("Luxo"));
-
-		builder.locacao.setCliente(new Cliente("Wesley"));
-
+		builder.locacao.setAtivo(true);
 		builder.locacao.setDataInicio(LocalDate.now());
-
 		builder.locacao.setValorAluguel(new BigDecimal(5000));
 
 		return builder;
 	}
 
+	public LocacaoBuilder paraUmImovel(String tipoImovel) {
+		locacao.setImovel(new Imovel(tipoImovel));
+		return this;
+	}
+
+	public LocacaoBuilder paraUmCliente(String nomeCliente) {
+		locacao.setCliente(new Cliente(nomeCliente));
+		return this;
+	}
+
+	public LocacaoBuilder ativo(boolean ativo) {
+		locacao.setAtivo(ativo);
+		return this;
+	}
+
+	public LocacaoBuilder noBairro(String bairro) {
+		locacao.getImovel().setBairro(bairro);
+		return this;
+	}
 
 	public Locacao constroi(){
 		return locacao;

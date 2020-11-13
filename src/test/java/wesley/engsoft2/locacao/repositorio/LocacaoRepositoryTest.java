@@ -7,6 +7,9 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import java.time.LocalDate;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class LocacaoRepositoryTest {
 
@@ -39,7 +42,7 @@ public class LocacaoRepositoryTest {
 	@Test
 	public void deveSalvarUmaLocacao() {
 
-		Locacao locacao = LocacaoBuilder.umaLocacao().constroi();
+		Locacao locacao = LocacaoBuilder.umaLocacao().ativo(true).paraUmImovel("Luxo").paraUmCliente("Wesley").constroi();
 
 		locacoes.salva(locacao);
 		manager.flush();
@@ -48,13 +51,12 @@ public class LocacaoRepositoryTest {
 		Locacao novaLocacao = locacoes.buscaPorDataInicio(LocalDate.now());
 
 		Assertions.assertNotNull(novaLocacao);
-
 	}
 
 	@Test
 	public void deveAtualizarUmaLocacao() {
 
-		Locacao locacao = LocacaoBuilder.umaLocacao().constroi();
+		Locacao locacao = LocacaoBuilder.umaLocacao().ativo(true).paraUmImovel("Luxo").paraUmCliente("Wesley").constroi();
 
 		locacoes.salva(locacao);
 		locacao.setDataInicio(LocalDate.now().plusDays(5));
@@ -75,7 +77,7 @@ public class LocacaoRepositoryTest {
 	@Test
 	public void deveExcluirUmaLocacao() {
 
-		Locacao locacao = LocacaoBuilder.umaLocacao().constroi();
+		Locacao locacao = LocacaoBuilder.umaLocacao().ativo(true).paraUmImovel("Luxo").paraUmCliente("Wesley").constroi();
 
 		locacoes.salva(locacao);
 		locacoes.exclui(locacao);
@@ -86,6 +88,41 @@ public class LocacaoRepositoryTest {
 		Assertions.assertThrows(NoResultException.class,
 				() -> locacoes.buscaPorDataInicio(LocalDate.now()),
 				"Deveria ter lançado a exceção NoResultException");
+	}
+
+	@Test
+	public void deveRecuperarTodosOsImoveisDoTipoApartamentoEDisponiveis() {
+
+		Locacao locacao01 = LocacaoBuilder.umaLocacao().ativo(true).paraUmImovel("Luxo")
+				.noBairro("Calhau").paraUmCliente("Wesley").constroi();
+
+		Locacao locacao02 = LocacaoBuilder.umaLocacao().ativo(true).paraUmImovel("Casa")
+				.noBairro("Turu").paraUmCliente("Carlos").constroi();
+
+		Locacao locacao03 = LocacaoBuilder.umaLocacao().ativo(true).paraUmImovel("Apartamento")
+				.noBairro("Barramar").paraUmCliente("Luis").constroi();
+
+		Locacao locacao04 = LocacaoBuilder.umaLocacao().ativo(true).paraUmImovel("Sito")
+				.noBairro("Barramar").paraUmCliente("Andre").constroi();
+
+		Locacao locacao05 = LocacaoBuilder.umaLocacao().ativo(false).paraUmImovel("Apartamento")
+				.noBairro("Turu").paraUmCliente("Eduardo").constroi();
+
+		Locacao locacao06 = LocacaoBuilder.umaLocacao().ativo(false).paraUmImovel("Apartamento")
+				.noBairro("Turu").paraUmCliente("Antonio").constroi();
+
+		locacoes.salva(locacao01);
+		locacoes.salva(locacao02);
+		locacoes.salva(locacao03);
+		locacoes.salva(locacao04);
+		locacoes.salva(locacao05);
+		locacoes.salva(locacao06);
+		manager.flush();
+		manager.clear();
+
+		List<Locacao> locacaoList = locacoes.recuperarLocacoesDoTipoApartamentoEAtivas("Turu","Apartamento",false);
+
+		assertEquals(2, locacaoList.size());
 	}
 
 }

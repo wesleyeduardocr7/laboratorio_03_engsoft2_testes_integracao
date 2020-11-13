@@ -2,6 +2,7 @@ package wesley.engsoft2.locacao.repositorio;
 import wesley.engsoft2.locacao.modelo.Locacao;
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.util.List;
 
 public class LocacaoRepositoryImpl implements LocacaolRepository {
 
@@ -16,6 +17,15 @@ public class LocacaoRepositoryImpl implements LocacaolRepository {
 		return manager.createQuery("SELECT l FROM Locacao l WHERE l.dataInicio = :pDataInicio", Locacao.class)
 				.setParameter("pDataInicio", dataInicio)
 				.getSingleResult();
+	}
+
+	@Override
+	public List<Locacao> recuperarLocacoesDoTipoApartamentoEAtivas(String bairro, String tipoImovel, boolean ativo) {
+		return manager.createQuery("SELECT l FROM Locacao l WHERE l.ativo = :pAtivo AND l.imovel.bairro = :pBairro AND l.imovel.tipoDeImovel = :pTipoImovel" , Locacao.class)
+				.setParameter("pAtivo", ativo)
+				.setParameter("pBairro", bairro)
+				.setParameter("pTipoImovel", tipoImovel)
+				.getResultList();
 	}
 
 	@Override

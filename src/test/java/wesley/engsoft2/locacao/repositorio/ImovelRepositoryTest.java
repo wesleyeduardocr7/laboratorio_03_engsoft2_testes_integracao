@@ -87,7 +87,6 @@ public class ImovelRepositoryTest {
 				"Deveria ter lançado a exceção NoResultException");
 	}
 
-
 	@Test
 	public void deveEncontrarImovelPeloTipo() {
 
@@ -103,5 +102,6 @@ public class ImovelRepositoryTest {
 
 		assertThat("Luxo", is(equalTo(imovelDoBanco.getTipoDeImovel())));
 	}
+
 
 }

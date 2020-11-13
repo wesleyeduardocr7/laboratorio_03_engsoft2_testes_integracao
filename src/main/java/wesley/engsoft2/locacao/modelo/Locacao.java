@@ -34,7 +34,7 @@ public class Locacao {
 	@Column(name = "data_fim")
 	private LocalDate dataFim;
 
-	@Column(name = "ativp")
+	@Column(name = "ativo")
 	private boolean ativo;
 
 	@Column(name = "obs")
