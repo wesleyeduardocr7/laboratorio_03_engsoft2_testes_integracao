@@ -37,9 +37,59 @@ public class ClienteRepositoryTest {
 		emf.close();
 	}
 
+	@Test
+	public void deveSalvarUmCliente() {
+
+		Cliente cliente = new Cliente("Wesley");
+
+		clientes.salva(cliente);
+		manager.flush();
+		manager.clear();
+
+		Cliente novoCliente = clientes.buscaPorNome("Wesley");
+		Assertions.assertNotNull(novoCliente);
+	}
 
 	@Test
-	public void deveEncontrarImovelPeloTipo() {
+	public void deveAtualizarUmCliente() {
+
+		Cliente cliente = new Cliente("Wesley");
+
+		clientes.salva(cliente);
+		cliente.setNome(("Eduardo"));
+
+		clientes.atualiza(cliente);
+
+		manager.flush();
+		manager.clear();
+
+		Cliente novoCliente = clientes.buscaPorNome("Eduardo");
+		Assertions.assertNotNull(novoCliente);
+
+		Assertions.assertThrows(NoResultException.class,
+				() -> clientes.buscaPorNome("Wesley"),
+				"Deveria ter lançado a exceção NoResultException");
+	}
+
+	@Test
+	public void deveExcluirUmCliente() {
+
+		Cliente cliente = new Cliente("Wesley");
+
+		clientes.salva(cliente);
+		clientes.exclui(cliente);
+
+		manager.flush();
+		manager.clear();
+
+		Assertions.assertThrows(NoResultException.class,
+				() -> clientes.buscaPorNome("Wesley"),
+				"Deveria ter lançado a exceção NoResultException");
+	}
+
+
+	@Test
+	public void deveEncontrarClientePeloNome() {
 
 		Assertions.assertThrows(NoResultException.class,
 				() -> clientes.buscaPorNome("Wesley"),

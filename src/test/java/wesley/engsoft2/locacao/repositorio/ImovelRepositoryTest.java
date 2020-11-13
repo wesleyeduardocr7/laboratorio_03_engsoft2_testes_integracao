@@ -1,6 +1,5 @@
 package wesley.engsoft2.locacao.repositorio;
 import org.junit.jupiter.api.*;
-import wesley.engsoft2.locacao.modelo.Aluguel;
 import wesley.engsoft2.locacao.modelo.Imovel;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
