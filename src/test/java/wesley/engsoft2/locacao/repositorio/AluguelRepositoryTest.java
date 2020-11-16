@@ -150,7 +150,6 @@ public class AluguelRepositoryTest {
 	@Test
 	public void deveLancarUmaExcecaoSeOValorPagoForMenorQueOValorDoAluguel(){
 
-
 		Aluguel aluguel = AluguelBuilder.umAluguel().comDataDeVencimento(LocalDate.of(2020, 11, 30)).comDataDePagamento(LocalDate.of(2020, 11, 30)).constroi();
 
 		aluguel.getLocacao().setValorAluguel(new BigDecimal(2000));
