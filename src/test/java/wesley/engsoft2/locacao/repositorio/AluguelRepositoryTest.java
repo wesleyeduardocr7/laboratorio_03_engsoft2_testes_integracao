@@ -1,11 +1,7 @@
 package wesley.engsoft2.locacao.repositorio;
 import org.junit.jupiter.api.*;
 import wesley.engsoft2.locacao.builder.AluguelBuilder;
-import wesley.engsoft2.locacao.builder.LocacaoBuilder;
 import wesley.engsoft2.locacao.modelo.Aluguel;
-import wesley.engsoft2.locacao.modelo.Imovel;
-import wesley.engsoft2.locacao.modelo.Locacao;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
@@ -158,6 +154,16 @@ public class AluguelRepositoryTest {
 				() -> aluguel.setValorPago(new BigDecimal(1800)),
 				"Valor pago deve ser no mímimo igual ao valor do Aluguel");
 
+	}
+
+	@Test
+	public void deveRetornarValorSemAcrescimoDeMultas(){
+
+		Aluguel aluguel = AluguelBuilder.umAluguel().comDataDeVencimento(LocalDate.of(2020, 11, 20)).comDataDePagamento(LocalDate.of(2020, 11, 15)).constroi();
+
+		aluguel.getLocacao().setValorAluguel(new BigDecimal(2000));
+
+		Assertions.assertEquals(aluguel.getLocacao().getValorAluguel(), aluguel.getValorASerPago());
 	}
 
 }

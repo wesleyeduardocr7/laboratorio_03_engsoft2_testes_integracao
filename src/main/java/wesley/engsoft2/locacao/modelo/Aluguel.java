@@ -2,6 +2,7 @@ package wesley.engsoft2.locacao.modelo;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 
 @Entity
@@ -72,6 +73,52 @@ public class Aluguel {
 		this.obs = obs;
 	}
 
+	public BigDecimal getValorASerPago() {
+
+		if(pagamentoEmAtraso()){
+		  return aluguelComMulta();
+		}
+
+		return  this.locacao.getValorAluguel();
+	}
+
+	private BigDecimal aluguelComMulta(){
+
+		BigDecimal valorMulta = calculaValorDaMulta();
+
+		if (valorMulta.compareTo(oitentaPorCentoValorFixoDoAlugue()) == 1) {
+			return this.locacao.getValorAluguel().add(oitentaPorCentoValorFixoDoAlugue());
+		} else {
+			return this.locacao.getValorAluguel().add(valorMulta);
+		}
+	}
+
+	private BigDecimal calculaValorDaMulta(){
+		Integer quantidadeDeDiasEmAtraso = getQuantidadeDeDiasEmAtraso();
+		return (new BigDecimal(quantidadeDeDiasEmAtraso).multiply(new BigDecimal(0.33)))
+				.divide(new BigDecimal(100)).multiply(this.locacao.getValorAluguel());
+	}
+
+	private Integer getQuantidadeDeDiasEmAtraso(){
+		Period period = Period.between(getDataVencimento(),getDataPagamento());
+		return period.getDays();
+	}
+
+	private BigDecimal oitentaPorCentoValorFixoDoAlugue(){
+		return this.locacao.getValorAluguel().multiply(new BigDecimal(0.8));
+	}
+
+	private boolean pagamentoEmAtraso(){
+
+		if(this.dataPagamento!=null && this.dataVencimento!=null){
+			if(this.dataPagamento.isAfter(this.dataVencimento)){
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -85,12 +132,14 @@ public class Aluguel {
 		return Objects.hash(locacao);
 	}
 
+
 	@Override
 	public String toString() {
 		return "Aluguel{" +
-				", locacao=" + locacao +
+				"locacao=" + locacao.toString() +
 				", dataVencimento=" + dataVencimento +
 				", valorPago=" + valorPago +
+				", valorASerPago=" + getValorASerPago()+
 				", dataPagamento=" + dataPagamento +
 				", obs='" + obs + '\'' +
 				'}';
