@@ -17,4 +17,6 @@ public interface AluguelRepository {
 	void exclui(Aluguel aluguel);
 
 	void atualiza(Aluguel aluguel);
+
+	List<Aluguel> recuperarAlugueisPagosEmAtrasoNaDataDeVencimentoPor(String nomeCliente);
 }

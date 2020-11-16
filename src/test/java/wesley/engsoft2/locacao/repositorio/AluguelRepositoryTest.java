@@ -96,7 +96,6 @@ public class AluguelRepositoryTest {
 	@Test
 	public void deveRecuperarUmaListaComTodosOsAlugueisPagosDeUmCliente(){
 
-
 		Aluguel aluguel01 = AluguelBuilder.umAluguel().comDataDeVencimento(LocalDate.of(2020,11,30)).comValorpago(new BigDecimal(500)).constroi();
 
 		Aluguel aluguel02 = AluguelBuilder.umAluguel().comDataDeVencimento(LocalDate.of(2020,11,25)).comValorpago(new BigDecimal(1000)).constroi();
@@ -116,6 +115,32 @@ public class AluguelRepositoryTest {
 				stream().filter(aluguel -> aluguel.getValorPago()!=null);
 
 		assertEquals(2, listaDeAlugueisPagos.count());
+	}
+
+	@Test
+	public void deveRecuperarUmaListaComTodosOsAlugueisPagosComAtrasoNaDataDeVencimentoDeUmCliente() {
+
+		Aluguel aluguel01 = AluguelBuilder.umAluguel().comDataDeVencimento(LocalDate.of(2020,11,30))
+				.comDataDePagamento(LocalDate.of(2020,12,30)).comValorpago(new BigDecimal(500)).constroi();
+
+		Aluguel aluguel02 = AluguelBuilder.umAluguel().comDataDeVencimento(LocalDate.of(2020,11,25)).comValorpago(new BigDecimal(1000)).constroi();
+
+		Aluguel aluguel03 = AluguelBuilder.umAluguel().comDataDeVencimento(LocalDate.of(2020,11,20))
+				.comDataDePagamento(LocalDate.of(2020,12,15)).constroi();
+
+		alugueis.salva(aluguel01);
+		alugueis.salva(aluguel02);
+		alugueis.salva(aluguel03);
+
+		manager.flush();
+		manager.clear();
+
+		List<Aluguel> listaDeAlugueis = alugueis.recuperarAlugueisPagosEmAtrasoNaDataDeVencimentoPor("Wesley");
+
+		Stream<Aluguel> listaDeAlugueisPagos = listaDeAlugueis.
+				stream().filter(aluguel -> aluguel.getValorPago() != null);
+
+		Assertions.assertEquals(1, listaDeAlugueisPagos.count());
 	}
 
 }

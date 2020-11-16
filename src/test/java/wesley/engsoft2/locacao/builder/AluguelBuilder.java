@@ -40,6 +40,11 @@ public class AluguelBuilder {
 		return this;
 	}
 
+	public AluguelBuilder comDataDePagamento(LocalDate dataPagamento) {
+		aluguel.setDataPagamento(dataPagamento);
+		return this;
+	}
+
 	public Aluguel constroi(){
 		return aluguel;
 	}
