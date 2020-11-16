@@ -8,6 +8,8 @@ public interface AluguelRepository {
 
 	Aluguel buscaPorDataVencimento(LocalDate dataVencimento);
 
+	Aluguel buscaPorObs(String obs);
+
 	List<Aluguel> recuperarAlugueisPagosPor(String nomeCliente);
 
 	void salva(Aluguel aluguel);

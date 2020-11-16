@@ -44,7 +44,7 @@ public class AluguelRepositoryTest {
 	@Test
 	public void deveSalvarUmAluguel(){
 
-		Aluguel aluguel = AluguelBuilder.umAluguel().constroi();
+		Aluguel aluguel = AluguelBuilder.umAluguel().comDataDeVencimento((LocalDate.now().plusDays(30))).constroi();
 
 		alugueis.salva(aluguel);
 		manager.flush();
@@ -59,29 +59,28 @@ public class AluguelRepositoryTest {
 	@Test
 	public void deveAtualizarUmAluguel() {
 
-		Aluguel aluguel = AluguelBuilder.umAluguel().constroi();
+		Aluguel aluguel = AluguelBuilder.umAluguel().comDataDeVencimento((LocalDate.now().plusDays(30))).comObs("Teste").constroi();
 
 		alugueis.salva(aluguel);
-		aluguel.setDataVencimento(LocalDate.of(2020,5,20));
+		aluguel.setObs("Mudou");
 
 		alugueis.atualiza(aluguel);
 
 		manager.flush();
 		manager.clear();
 
-		Aluguel novoAluguel = alugueis.buscaPorDataVencimento(LocalDate.of(2020,5,20));
+		Aluguel novoAluguel = alugueis.buscaPorObs("Mudou");
 		Assertions.assertNotNull(novoAluguel);
 
 		Assertions.assertThrows(NoResultException.class,
-			() -> alugueis.buscaPorDataVencimento(LocalDate.now().plusDays(30)),
+			() -> alugueis.buscaPorObs("Teste"),
 			"Deveria ter lançado a exceção NoResultException");
 	}
 
 	@Test
 	public void deveExcluirUmAluguel() {
 
-
-		Aluguel aluguel = AluguelBuilder.umAluguel().constroi();
+		Aluguel aluguel = AluguelBuilder.umAluguel().comDataDeVencimento((LocalDate.now().plusDays(30))).comObs("Teste").constroi();
 
 		alugueis.salva(aluguel);
 		alugueis.exclui(aluguel);

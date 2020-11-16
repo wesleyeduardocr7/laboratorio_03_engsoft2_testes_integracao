@@ -22,6 +22,13 @@ public class AluguelRepositoryImpl implements AluguelRepository {
 	}
 
 	@Override
+	public Aluguel buscaPorObs(String obs) {
+		return manager.createQuery("SELECT a FROM Aluguel a WHERE a.obs = :pObs", Aluguel.class)
+				.setParameter("pObs", obs)
+				.getSingleResult();
+	}
+
+	@Override
 	public List<Aluguel> recuperarAlugueisPagosPor(String nomeCliente) {
 		return manager.createQuery("SELECT a FROM Aluguel a WHERE a.locacao.cliente.nome = :pNomeCliente" , Aluguel.class)
 				.setParameter("pNomeCliente", nomeCliente)

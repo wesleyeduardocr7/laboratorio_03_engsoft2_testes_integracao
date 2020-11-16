@@ -1,8 +1,6 @@
 package wesley.engsoft2.locacao.builder;
 import wesley.engsoft2.locacao.modelo.Aluguel;
-import wesley.engsoft2.locacao.modelo.Cliente;
 import wesley.engsoft2.locacao.modelo.Locacao;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -34,6 +32,11 @@ public class AluguelBuilder {
 
 	public AluguelBuilder comValorpago(BigDecimal valorPago) {
 		aluguel.setValorPago(valorPago);
+		return this;
+	}
+
+	public AluguelBuilder comObs(String obs) {
+		aluguel.setObs(obs);
 		return this;
 	}
 
