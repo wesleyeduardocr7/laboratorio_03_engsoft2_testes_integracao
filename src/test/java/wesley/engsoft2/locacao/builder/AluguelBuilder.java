@@ -14,7 +14,7 @@ public class AluguelBuilder {
 	public static AluguelBuilder umAluguel() {
 
 		Locacao locacao = LocacaoBuilder.umaLocacao().ativo(true).paraUmImovel("Luxo")
-				.comValorSugerido(new BigDecimal(50000)).noBairro("Calhau").paraUmCliente("Wesley").constroi();
+				.noBairro("Calhau").paraUmCliente("Wesley").constroi();
 
 		AluguelBuilder builder = new AluguelBuilder();
 

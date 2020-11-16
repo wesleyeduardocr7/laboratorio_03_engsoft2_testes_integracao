@@ -47,6 +47,12 @@ public class Aluguel {
 	}
 
 	public void setValorPago(BigDecimal valorPago) {
+
+		if (valorPago != null && this.locacao.getValorAluguel() != null) {
+			if (valorPago.compareTo(this.locacao.getValorAluguel()) == -1) {
+				throw new IllegalArgumentException("Valor pago deve ser no mímimo igual ao valor do Aluguel");
+			}
+		}
 		this.valorPago = valorPago;
 	}
 
